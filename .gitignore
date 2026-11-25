@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Data (DO NOT upload the dataset to GitHub)
+data/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Artifacts (Optional: Ignore model weights if the file is >100MB. DenseNet is usually ~30MB, so we will INCLUDE artifacts for now)
+# artifacts/best_model.pth

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="banner">⚠️ Research prototype only — not for clinical diagnosis.</div>
+<h1>Explainable Chest X-Ray Classifier</h1>
+<p class="subtitle">COVID-19 · Normal · Pneumonia — AI-assisted diagnosis with calibrated probabilities and Grad-CAM.</p>
+
+{% if not model_ready %}
+  <div class="notice error">
+    No trained model found. Run <code>python -m scripts.train</code> first.
+  </div>
+{% else %}
+  <form id="upload-form" hx-post="/predict" hx-target="#result" hx-encoding="multipart/form-data" hx-indicator="#spin">
+    <label class="dropzone" for="file-input">
+      <div class="dropzone-content">
+        <span class="icon">📁</span>
+        <span id="file-name-display">Click to upload a chest X-ray (PNG / JPG)</span>
+      </div>
+      <input type="file" id="file-input" name="file" accept=".png,.jpg,.jpeg,image/png,image/jpeg" required>
+    </label>
+    <button type="submit" class="btn-primary">Analyze Image</button>
+    <span id="spin" class="htmx-indicator">⏳ Analyzing image…</span>
+  </form>
+  <div id="result"></div>
+
+  <script>
+    document.getElementById('file-input').addEventListener('change', function(e) {
+      const name = e.target.files[0] ? e.target.files[0].name : "Click to upload a chest X-ray (PNG / JPG)";
+      document.getElementById('file-name-display').textContent = name;
+    });
+  </script>
+{% endif %}
+{% endblock %}

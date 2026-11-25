@@ -1,0 +1,69 @@
+{% if error %}
+  <div class="notice error">{{ error }}</div>
+{% else %}
+  <div class="result">
+    
+    <!-- Triage Header -->
+    <div class="triage-header {{ severity }}">
+      <h2>Diagnosis: {{ predicted }}</h2>
+      <p>Calibrated Confidence: <strong>{{ "%.1f"|format(calibrated_confidence * 100) }}%</strong></p>
+    </div>
+
+    <!-- Images -->
+    <div class="images">
+      <figure>
+        <img src="{{ image }}" alt="Original X-ray">
+        <figcaption>Original (CLAHE-enhanced)</figcaption>
+      </figure>
+      <figure>
+        <img src="{{ heatmap }}" alt="Grad-CAM overlay">
+        <figcaption>Grad-CAM (regions driving the prediction)</figcaption>
+      </figure>
+    </div>
+
+    <!-- Advice -->
+    <div class="advice-box {{ severity }}">
+      <h3>Recommended Next Steps:</h3>
+      <ul>
+        {% for step in advice %}
+          <li>{{ step }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    {% if low_confidence %}
+      <div class="notice warning">
+        <strong>Note:</strong> The AI is uncertain about this prediction. A human radiologist must review this scan.
+      </div>
+    {% endif %}
+
+    <!-- Table -->
+    <div class="table-container">
+      <table class="probs">
+        <thead><tr><th>Class</th><th>Raw %</th><th>Calibrated %</th></tr></thead>
+        <tbody>
+          {% for p in probabilities %}
+            <tr>
+              <td>{{ p.name }}</td>
+              <td>{{ "%.1f"|format(p.raw * 100) }}</td>
+              <td>{{ "%.1f"|format(p.calibrated * 100) }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Buttons -->
+    <div class="action-buttons">
+      <a href="{{ heatmap }}" download="gradcam_xray.png" class="btn-secondary">📥 Save Heatmap</a>
+      
+          <!-- ... inside the action-buttons div ... -->
+      <form action="/download_report" method="post" enctype="multipart/form-data" style="margin: 0;">
+        <input type="file" name="file" id="report-file-input" style="display: none;">
+        <button type="submit" class="btn-primary btn-report" onclick="document.getElementById('report-file-input').files = document.getElementById('file-input').files;">
+          📄 Download Clinical PDF Report
+        </button>
+      </form>
+    </div>
+  </div>
+{% endif %}
