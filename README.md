@@ -1,26 +1,16 @@
 # Explainable Chest X-Ray Classifier (FastAPI + PyTorch)
 
-Research prototype — not a diagnostic tool.
-
-## Setup (Python 3.12)
-    python -m pip install -r requirements.txt
+Research prototype — not a diagnostic tool. Detects COVID-19, Normal, and Pneumonia from chest X-rays with model calibration (temperature scaling) and Grad-CAM explainability.
 
 ## Data
-Put Kaggle COVID-19 Radiography images under `data/raw/{COVID,Normal,Viral Pneumonia}/`.
-Then train (auto 70/15/15 stratified split into `data/{train,val,test}/`):
+This project uses the [Chest X-Ray COVID19 & Pneumonia Dataset](https://www.kaggle.com/datasets/prashant268/chest-xray-covid19-pneumonia) from Kaggle.
 
-    python -m scripts.train --epochs 15
+To retrain the model, download the dataset and place it in the `data/` folder. The script will automatically create a validation split if one doesn't exist. The structure should look like this:
 
-Output: `artifacts/calibrated_model.pth` (weights + temperature + class names).
-
-## Run the web app
-    uvicorn app.main:app --reload --port 8000
-
-Open http://localhost:8000 → upload a chest X-ray → calibrated probabilities + Grad-CAM.
-
-## Structure
-- `app/main.py` — FastAPI routes (`GET /`, `POST /predict`)
-- `app/ml/model.py` — DenseNet121 + temperature fit
-- `app/ml/inference.py` — inference + Grad-CAM + base64 (singleton)
-- `app/templates/*.html` — Jinja2 + HTMX
-- `scripts/train.py` — training + calibration
+```text
+data/
+├── train/
+│   ├── COVID19/
+│   ├── NORMAL/
+│   └── PNEUMONIA/
+└── test/
