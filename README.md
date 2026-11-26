@@ -3,7 +3,6 @@
 ![Python](https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.115.5-009688)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.4.1-EE4C2C)
-![License](https://img.shields.io/badge/License-MIT-green)
 
 An end-to-end Deep Learning web application for detecting **COVID-19, Pneumonia, and Normal** chest X-rays. 
 
@@ -23,7 +22,6 @@ An end-to-end Deep Learning web application for detecting **COVID-19, Pneumonia,
 
 - **Python 3.10 - 3.12** (PyTorch is not yet fully stable on 3.13/3.14)
 - **PyTorch** (CUDA-enabled GPU recommended for training, CPU is fine for inference)
-- **Node.js** (Not required, we use HTMX via CDN)
 
 ---
 
